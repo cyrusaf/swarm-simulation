@@ -12,11 +12,12 @@ for i in range(0,50):
 
 sim.running = True
 while sim.running:
-	if sim.frame_num % 10 == 0:
+	if sim.frame_num % 25 == 0:
 		for forager in sim.foragers:
+			print forager.sense(sim.food)
 			forager.rotatingCW = (True if randint(0,1) == 0 else False)
 			forager.rotatingCCW = (True if randint(0,1) == 0 else False)
-			forager.moving = (True if randint(0,1) == 0 else False)
+			#forager.moving = (True if randint(0,1) == 0 else False)
 
 
 	sim.nextFrame()

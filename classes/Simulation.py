@@ -18,6 +18,9 @@ class Simulation:
 		self.foragers = []
 		self.food = []
 		self.frame_num = 0
+		self.font = pygame.font.SysFont("monospace", 15)
+		self.draw_sensors = True
+
 
 	def startLoop(self):
 		self.running = True
@@ -30,8 +33,6 @@ class Simulation:
 		self.__checkCollisions()
 		self.__move()
 
-		total_food = sum([forager.food_collected for forager in self.foragers])
-		print total_food
 		self.frame_num += 1
 		time.sleep(1.0/33)
 
@@ -58,8 +59,19 @@ class Simulation:
 	def __draw(self):
 		self.screen.fill((255,255,255))
 		self.spawn.draw(self.screen)
+
+		# Draw foragers
+		total_food = 0
 		for forager in self.foragers:
 			forager.draw(self.screen)
+			if self.draw_sensors: forager.drawSensor(self.screen)
+			total_food += forager.food_collected
+
+		# Draw score
+		label = self.font.render("Food Collected: %s" % total_food, 1, (0,0,0))
+		self.screen.blit(label, (20, 20))
+
+		# Draw food
 		for food in self.food:
 			food.draw(self.screen)
 		pygame.display.flip()

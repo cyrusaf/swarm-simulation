@@ -29,7 +29,7 @@ class Forager(MovableEntity):
 				if dist <= self.radius + food_item.radius:
 					self.carryingFood = True
 					food.remove(food_item)
-					self.color = (0,100,180)
+					self.color = (0,70,140)
 					total += 1
 
 		if self.carryingFood == True:
