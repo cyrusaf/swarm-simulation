@@ -10,14 +10,16 @@ from Food import Food
 class Simulation:
 
 	def __init__(self):
-		self.running = False
-		pygame.init()
 		self.screenSize = (800,800)
-		self.screen = pygame.display.set_mode(self.screenSize)
+		self.running = False
 		self.spawn = Spawn([self.screenSize[0]/2, self.screenSize[1]/2])
 		self.foragers = []
 		self.food = []
 		self.frame_num = 0
+		
+		# Pygame init
+		pygame.init()
+		self.screen = pygame.display.set_mode(self.screenSize)
 		self.font = pygame.font.SysFont("monospace", 15)
 		self.draw_sensors = True
 
@@ -34,7 +36,6 @@ class Simulation:
 		self.__move()
 
 		self.frame_num += 1
-		time.sleep(1.0/33)
 
 	def spawnForager(self):
 		pos = self.spawn.pos[:]

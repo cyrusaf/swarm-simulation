@@ -7,4 +7,4 @@ class Entity(object):
 		self.color = (0,0,0)
 
 	def draw(self, screen):
-		pygame.draw.circle(screen, self.color, tuple(self.pos), self.radius)
+		pygame.draw.aacircle(screen, self.pos[0], self.pos[1], self.radius, self.color)

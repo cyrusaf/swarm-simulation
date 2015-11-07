@@ -10,4 +10,5 @@ class Food(Entity):
 		self.radius = 5
 
 	def draw(self, screen):
-		pygame.draw.circle(screen, self.color, tuple(self.pos), self.radius)
+		pygame.gfxdraw.filled_circle(screen, self.pos[0], self.pos[1], self.radius, self.color)
+		pygame.gfxdraw.aacircle(screen, self.pos[0], self.pos[1], self.radius, self.color)

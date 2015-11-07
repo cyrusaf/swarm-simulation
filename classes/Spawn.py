@@ -1,4 +1,5 @@
 import pygame
+from pygame import gfxdraw
 
 from Entity import Entity
 
@@ -10,4 +11,4 @@ class Spawn(Entity):
 		self.radius = 75
 
 	def draw(self, screen):
-		pygame.draw.circle(screen, self.color, tuple(self.pos), self.radius, 2)
+		pygame.gfxdraw.aacircle(screen, self.pos[0], self.pos[1], self.radius, self.color)
