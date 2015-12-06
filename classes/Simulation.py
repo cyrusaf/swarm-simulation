@@ -2,13 +2,15 @@ import pygame
 import math
 import time
 from random import randint
+from copy import deepcopy
 
 from Forager import Forager
 from Spawn import Spawn
 from Food import Food
 
 class Simulation:
-
+	drawing       = True
+	lighting_mode = True
 	def __init__(self):
 		self.screenSize = (800,800)
 		self.running = False
@@ -16,12 +18,21 @@ class Simulation:
 		self.foragers = []
 		self.food = []
 		self.frame_num = 0
+		self.draw_sensors = True
 		
+	
+	def init(self):
 		# Pygame init
 		pygame.init()
 		self.screen = pygame.display.set_mode(self.screenSize)
 		self.font = pygame.font.SysFont("monospace", 15)
-		self.draw_sensors = True
+		
+
+	def copy(self):
+		new_sim = Simulation()
+		new_sim.foragers = deepcopy(self.foragers)
+		new_sim.food = deepcopy(self.food)
+		return new_sim
 
 
 	def startLoop(self):
@@ -31,11 +42,12 @@ class Simulation:
 
 	def nextFrame(self):
 		self.__checkEvents()
-		self.__draw()
+		if Simulation.drawing: self.__draw()
 		self.__checkCollisions()
 		self.__move()
 
 		self.frame_num += 1
+		if not Simulation.lighting_mode: time.sleep(1.0/400.0)
 
 	def spawnForager(self):
 		pos = self.spawn.pos[:]
@@ -56,6 +68,13 @@ class Simulation:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				self.running = False
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					Simulation.drawing = (False if Simulation.drawing else True)
+					print "Toggled drawing to %s" % Simulation.drawing
+				if event.key == pygame.K_l:
+					Simulation.lighting_mode = (False if Simulation.lighting_mode else True)
+					print "Toggled lighting_mode to %s" % Simulation.lighting_mode
 
 	def __draw(self):
 		self.screen.fill((255,255,255))

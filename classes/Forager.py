@@ -56,11 +56,11 @@ class Forager(MovableEntity):
 
 			#print "%s = %s" % (dist, sensor_radius + food_item.radius)
 			if dist <= sensor_radius + food_item.radius:
-				food_sensed.append(food_item.pos)
+				food_sensed.append(self.normVectorTo(food_item))
 
 
 		return {
 			'food': food_sensed,
-			'spawn': spawn.pos,
+			'spawn': self.normVectorTo(spawn),
 			'carrying_food': self.carrying_food
 		}

@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Entity(object):
 	def __init__(self, pos):

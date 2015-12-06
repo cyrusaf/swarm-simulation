@@ -11,13 +11,13 @@ class MovableEntity(Entity):
 		self.theta = float(theta)
 		self.color = (0,112,0)
 		self.velocity = 5
-		self.angular_velocity = 0.1
+		self.angular_velocity = 1
 
 		self.rotatingCW = False
 		self.rotatingCCW = False
 		self.moving = True
 
-		self.sensor_dist = 50
+		self.sensor_dist = 75
 
 	def draw(self, screen):
 		pygame.draw.circle(screen, self.color, tuple(self.pos), self.radius)
@@ -44,3 +44,14 @@ class MovableEntity(Entity):
 
 	def __getVector(self):
 		return (math.cos(self.theta), math.sin(self.theta))
+
+	def normVectorTo(self, entity):
+		vec = [self.pos[0] - entity.pos[0], self.pos[1] - entity.pos[1]]
+		magnitude = math.sqrt(vec[0]**2 + vec[1]**2)
+		if magnitude == 0:
+			vec = [0, 0]
+		else:
+			vec = [vec[0]/magnitude, vec[1]/magnitude]
+		cs = math.cos(self.theta)
+		sn = math.sin(self.theta)
+		return [vec[0]*cs - vec[1]*sn, vec[0]*sn + vec[1]*cs]
