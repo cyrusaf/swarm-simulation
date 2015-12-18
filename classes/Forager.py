@@ -49,18 +49,54 @@ class Forager(MovableEntity):
 		food_sensed = []
 
 		# Find collisions with sensor hitbox
-
+		food_items = []
 		for food_item in food:
 			#print "%s - %s" % (food_item.pos, self.pos)
 			dist = math.hypot(food_item.pos[0] - self.pos[0], food_item.pos[1] - self.pos[1])
 
 			#print "%s = %s" % (dist, sensor_radius + food_item.radius)
 			if dist <= sensor_radius + food_item.radius:
-				food_sensed.append(self.normVectorTo(food_item))
+				food_items.append([self.normVectorTo(food_item), dist])
+
+
+		food_items.sort(key=lambda x: x[1])
+
+
+		sensor_angle = math.pi/8
+		sensor_num   = 5
+		sensors = [0 for i in range(0,sensor_num)]
+
+		for food_item in food_items:
+			# Get angle to food
+			angle = math.atan2(food_item[0][1], food_item[0][0])
+
+			total_angle = sensor_angle*sensor_num
+			for i in range(0,sensor_num):
+				sense_angle = (i+0.5)*sensor_angle - total_angle/2
+				anglediff = (sense_angle - angle + math.pi/2) % math.pi - math.pi/2
+				if anglediff <= sensor_angle/2 and anglediff >= -1*sensor_angle/2:
+					if food_item[1] == 0: food_item[1] = 0.1
+					sensors[i] = 2.0#self.sensor_dist / food_item[1]
+
+
+			food_sensed.append(sensors)
+			sensors = [0 for i in range(0,sensor_num)]
+
+		# Sense spawn
+		vec = self.normVectorTo(spawn)
+		angle = math.atan2(vec[1], vec[0])
+		total_angle = sensor_angle*sensor_num
+		for i in range(0,sensor_num):
+			sense_angle = (i+0.5)*sensor_angle - total_angle/2
+			anglediff = (sense_angle - angle + math.pi/2) % math.pi - math.pi/2
+			if anglediff <= sensor_angle/2 and anglediff >= -1*sensor_angle/2:
+				sensors[i] = 2.0
+
+		spawn_sensed = sensors
 
 
 		return {
 			'food': food_sensed,
-			'spawn': self.normVectorTo(spawn),
+			'spawn': spawn_sensed,
 			'carrying_food': self.carrying_food
 		}

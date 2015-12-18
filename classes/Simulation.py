@@ -11,6 +11,8 @@ from Food import Food
 class Simulation:
 	drawing       = True
 	lighting_mode = True
+	food_respawn  = False
+
 	def __init__(self):
 		self.screenSize = (800,800)
 		self.running = False
@@ -47,7 +49,7 @@ class Simulation:
 		self.__move()
 
 		self.frame_num += 1
-		if not Simulation.lighting_mode: time.sleep(1.0/400.0)
+		if not Simulation.lighting_mode: time.sleep(1.0/100.0)
 
 	def spawnForager(self):
 		pos = self.spawn.pos[:]
@@ -104,4 +106,13 @@ class Simulation:
 		for forager in self.foragers:
 			collissions = forager.checkCollisions(self.food, self.spawn)
 			for i in range(0,collissions):
-				self.spawnFood()
+				if Simulation.food_respawn: self.spawnFood()
+
+	def allOffScreen(self):
+		on_screen = False
+		for forager in self.foragers:
+			if (forager.pos[0] > forager.radius) and (forager.pos[0] - forager.radius < self.screenSize[0]) and (forager.pos[1] > forager.radius) and (forager.pos[1] - forager.radius < self.screenSize[1]):
+				on_screen = True
+				break
+
+		return not on_screen

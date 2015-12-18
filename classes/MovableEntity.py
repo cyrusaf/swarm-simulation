@@ -11,13 +11,13 @@ class MovableEntity(Entity):
 		self.theta = float(theta)
 		self.color = (0,112,0)
 		self.velocity = 5
-		self.angular_velocity = 1
+		self.angular_velocity = .524/6.0 # used to be 1.0
 
 		self.rotatingCW = False
 		self.rotatingCCW = False
 		self.moving = True
 
-		self.sensor_dist = 75
+		self.sensor_dist = 150
 
 	def draw(self, screen):
 		pygame.draw.circle(screen, self.color, tuple(self.pos), self.radius)
